@@ -1,6 +1,5 @@
 #include "KNN.h"
-#include "Euclidean.h"
-#include "DTW.h"
+#include "Distances.h"
 
 #include <cmath>
 #include <algorithm>
@@ -43,9 +42,11 @@ double KNN::evaluate(const TimeSeriesDataset& trainData,
             double dist = 0.0;
 
             if (similarity_measure == "dtw" || similarity_measure == "DTW") {
-                dist = dtw(testSamples[i], trainSamples[j]);
+                dist = Distances::dtw(testSamples[i], trainSamples[j]);
             } else if (similarity_measure == "euclidean_distance" || similarity_measure == "Euclidean") {
-                dist = euclidean_distance(testSamples[i], trainSamples[j]);
+                dist = Distances::euclidean_distance(testSamples[i], trainSamples[j]);
+            } else if (similarity_measure == "edr" || similarity_measure == "EDR") {
+                dist = Distances::edr(testSamples[i], trainSamples[j]);
             } else {
                 // Par défaut ou erreur, on met une distance infinie
                 cout << "Erreur: Mesure inconnue '" << similarity_measure << "'" << endl;
