@@ -11,10 +11,9 @@ using namespace std;
 
 int main() {
     // 1. Initialisation des datasets
-    // trainData : znormalize=false, isTrain=true
-    // testData  : znormalize=false, isTrain=false
-    TimeSeriesDataset trainData(false, true);
-    TimeSeriesDataset testData(false, false);
+    // On active znormalize (true) pour que EDR fonctionne et pour comparer Sinus/Step équitablement.
+    TimeSeriesDataset trainData(true, true);
+    TimeSeriesDataset testData(true, false);
 
     // 2. Instanciation des générateurs
     GaussianGenerator gsg;
@@ -64,20 +63,34 @@ int main() {
 
     // --- Évaluation avec KNN ---
 
-    // Premier KNN : k=1, distance=dtw
-    KNN knn_1(1, "dtw");
-    cout << "Accuracy KNN (k=1, dtw) : "
-         << knn_1.evaluate(trainData, testData, ground_truth) << endl;
+    // --- A. Distance Euclidienne ---
+    cout << "--- 1. Distance Euclidienne ---" << endl;
 
-    // Deuxième KNN : k=2, distance=euclidean_distance
-    KNN knn_2(2, "euclidean_distance");
-    cout << "Accuracy KNN (k=2, euclidean) : "
-         << knn_2.evaluate(trainData, testData, ground_truth) << endl;
+    KNN knn_euc_1(1, "euclidean_distance");
+    cout << "Accuracy (K=1) : " << knn_euc_1.evaluate(trainData, testData, ground_truth) << endl;
 
-    // Troisième KNN : k=3, distance=euclidean_distance
-    KNN knn_3(3, "euclidean_distance");
-    cout << "Accuracy KNN (k=3, euclidean) : "
-         << knn_3.evaluate(trainData, testData, ground_truth) << endl;
+    KNN knn_euc_3(3, "euclidean_distance");
+    cout << "Accuracy (K=3) : " << knn_euc_3.evaluate(trainData, testData, ground_truth) << endl;
+
+
+    // --- B. Dynamic Time Warping (DTW) ---
+    cout << endl << "--- 2. Dynamic Time Warping (DTW) ---" << endl;
+
+    KNN knn_dtw_1(1, "dtw");
+    cout << "Accuracy (K=1) : " << knn_dtw_1.evaluate(trainData, testData, ground_truth) << endl;
+
+    KNN knn_dtw_3(3, "dtw");
+    cout << "Accuracy (K=3) : " << knn_dtw_3.evaluate(trainData, testData, ground_truth) << endl;
+
+
+    // --- C. Edit Distance on Real Sequences (EDR - Bonus) ---
+    cout << endl << "--- 3. Edit Distance (EDR) ---" << endl;
+
+    KNN knn_edr_1(1, "edr");
+    cout << "Accuracy (K=1) : " << knn_edr_1.evaluate(trainData, testData, ground_truth) << endl;
+
+    KNN knn_edr_3(3, "edr");
+    cout << "Accuracy (K=3) : " << knn_edr_3.evaluate(trainData, testData, ground_truth) << endl;
 
     return 0;
 }
