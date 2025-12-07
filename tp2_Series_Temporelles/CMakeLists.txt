@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 4.0)
-project(tp2)
+project(tp2_Series_Temporelles)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(tp2 main.cpp
+add_executable(tp2_Series_Temporelles main.cpp
         TimeSeriesGenerator.cpp
         TimeSeriesGenerator.h
         GaussianGenerator.cpp

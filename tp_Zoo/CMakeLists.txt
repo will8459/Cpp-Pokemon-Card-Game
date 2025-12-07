@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 4.0)
-project(tp_note)
+project(tp_Zoo)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(tp_note main.cpp
+add_executable(tp_Zoo main.cpp
         Animal.cpp
         Animal.h
         Mammal.cpp
